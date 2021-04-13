@@ -1,6 +1,7 @@
 {
-  "extends": "standard-with-typescript",
+  "extends": "eslint-config-standard",
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.json",
+    "ecmaVersion": 2019
   }
 }
