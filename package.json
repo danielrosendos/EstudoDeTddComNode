@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --passWithNoTests",
-    "test:staged": "jest --passWithNoTests",
+    "test": "jest --passWithNoTests --watch",
+    "test:staged": "jest --passWithNoTests --watch",
     "clear-cache": "jest --clearCache"
   },
   "keywords": [],
