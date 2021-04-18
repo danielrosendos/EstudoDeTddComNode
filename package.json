@@ -8,11 +8,6 @@
     "test:staged": "jest --passWithNoTests",
     "clear-cache": "jest --clearCache"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
