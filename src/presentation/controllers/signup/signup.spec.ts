@@ -1,28 +1,31 @@
-import { SignUpController } from './signup'
+import {SignUpController} from './signup'
 
 import {
   MissingParamError,
   InvalidParamError,
   ServerError
-} from '../erros'
+} from '../../erros'
 
-import { EmailValidator } from "../protocols"
-
-import { AccountModel } from "../../domain/models/account";
-import { AddAccount, AddAccountModel } from "../../domain/usecases/add-account";
+import {
+  EmailValidator,
+  AccountModel,
+  AddAccount,
+  AddAccountModel
+} from "./signup-protocols"
 
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
-    isValid (email: string): boolean {
+    isValid(email: string): boolean {
       return true
     }
   }
+
   return new EmailValidatorStub()
 }
 
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
-    add (account: AddAccountModel): AccountModel {
+    add(account: AddAccountModel): AccountModel {
       const fakeAccount = {
         id: 'validId',
         name: 'valid_name',
@@ -32,6 +35,7 @@ const makeAddAccount = (): AddAccount => {
       return fakeAccount
     }
   }
+
   return new AddAccountStub()
 }
 
@@ -54,7 +58,7 @@ interface SutTypes {
 
 describe('SignUp Controller', () => {
   test('Should return 400 if no name is provider', () => {
-    const { sut } = makeSut()
+    const {sut} = makeSut()
     const httpRequest = {
       body: {
         email: 'any_email@mail.com',
@@ -70,7 +74,7 @@ describe('SignUp Controller', () => {
 
 describe('SignUp Controller', () => {
   test('Should return 400 if no email is provider', () => {
-    const { sut } = makeSut()
+    const {sut} = makeSut()
     const httpRequest = {
       body: {
         name: 'any_name',
@@ -86,7 +90,7 @@ describe('SignUp Controller', () => {
 
 describe('SignUp Controller', () => {
   test('Should return 400 if no password is provider', () => {
-    const { sut } = makeSut()
+    const {sut} = makeSut()
     const httpRequest = {
       body: {
         name: 'any_name',
@@ -102,7 +106,7 @@ describe('SignUp Controller', () => {
 
 describe('SignUp Controller', () => {
   test('Should return 400 if no passwordConfirmation is provider', () => {
-    const { sut } = makeSut()
+    const {sut} = makeSut()
     const httpRequest = {
       body: {
         name: 'any_name',
@@ -118,7 +122,7 @@ describe('SignUp Controller', () => {
 
 describe('SignUp Controller', () => {
   test('Should return 400 if password confirmation fails', () => {
-    const { sut } = makeSut()
+    const {sut} = makeSut()
     const httpRequest = {
       body: {
         name: 'any_name',
@@ -135,7 +139,7 @@ describe('SignUp Controller', () => {
 
 describe('SignUp Controller', () => {
   test('Should return 400 if an invalid email is provider', () => {
-    const { sut, emailValidatorStub } = makeSut()
+    const {sut, emailValidatorStub} = makeSut()
     jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(false)
     const httpRequest = {
       body: {
@@ -153,7 +157,7 @@ describe('SignUp Controller', () => {
 
 describe('SignUp Controller', () => {
   test('Should call EmailValidator with correct email', () => {
-    const { sut, emailValidatorStub } = makeSut()
+    const {sut, emailValidatorStub} = makeSut()
     const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid')
     const httpRequest = {
       body: {
@@ -170,7 +174,7 @@ describe('SignUp Controller', () => {
 
 describe('SignUp Controller', () => {
   test('Should return 500 if EmailValidator throws', () => {
-    const { sut, emailValidatorStub } = makeSut()
+    const {sut, emailValidatorStub} = makeSut()
     jest.spyOn(emailValidatorStub, 'isValid').mockImplementationOnce(() => {
       throw new Error()
     })
@@ -190,7 +194,7 @@ describe('SignUp Controller', () => {
 
 describe('SignUp Controller', () => {
   test('Should call AddAcount with correct values', () => {
-    const { sut, addAccountStub } = makeSut()
+    const {sut, addAccountStub} = makeSut()
     const addSpy = jest.spyOn(addAccountStub, 'add')
     const httpRequest = {
       body: {
